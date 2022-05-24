@@ -10,6 +10,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
 import { LOGIN_ROUTE } from '../utils/consts';
+import { Context } from '..';
+import firebase from 'firebase/compat/app';
 
 const theme = createTheme({
   palette: {
@@ -21,6 +23,14 @@ const theme = createTheme({
 });
 
 const SignUp = () => {
+  const { auth } = React.useContext(Context);
+
+  const signUp = async () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const { user } = await auth.signInWithPopup(provider);
+    console.log(user);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -92,7 +102,7 @@ const SignUp = () => {
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Зарегистрироваться
             </Button>
-            <Button fullWidth variant="contained" sx={{ mb: 2 }}>
+            <Button onClick={signUp} fullWidth variant="contained" sx={{ mb: 2 }}>
               Войти через Google
               <GoogleIcon />
             </Button>
