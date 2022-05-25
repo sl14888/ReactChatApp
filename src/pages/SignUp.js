@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
@@ -10,8 +10,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
 import { LOGIN_ROUTE } from '../utils/consts';
-import { Context } from '..';
+import { Context } from '../firebase';
 import firebase from 'firebase/compat/app';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const theme = createTheme({
   palette: {
@@ -31,15 +32,42 @@ const SignUp = () => {
     console.log(user);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('firstName'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     name: data.get('firstName'),
+  //     lastName: data.get('lastName'),
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //   });
+  // };
+
+  const [data, setData] = useState({
+    name: '',
+    lastName: '',
+    email: '',
+    password: '',
+    error: null,
+    loading: false,
+  });
+  const { name, lastName, email, password, error, loading } = data;
+
+  const handleChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(data);
+    setData({ ...data, error: null, loading: true });
+    if (!name || !lastName || !email || !password) {
+      setData({ ...data, error: 'Заполнить все поля' });
+    }
+    try {
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      console.log(result.user);
+    } catch (error) {}
   };
 
   return (
@@ -60,7 +88,9 @@ const SignUp = () => {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  name="firstName"
+                  onChange={handleChange}
+                  value={name}
+                  name="name"
                   required
                   fullWidth
                   id="firstName"
@@ -72,6 +102,8 @@ const SignUp = () => {
                 <TextField
                   required
                   fullWidth
+                  onChange={handleChange}
+                  value={lastName}
                   id="lastName"
                   label="Фамилия"
                   name="lastName"
@@ -81,6 +113,8 @@ const SignUp = () => {
                 <TextField
                   required
                   fullWidth
+                  onChange={handleChange}
+                  value={email}
                   id="email"
                   label="Почта"
                   name="email"
@@ -91,6 +125,8 @@ const SignUp = () => {
                 <TextField
                   required
                   fullWidth
+                  onChange={handleChange}
+                  value={password}
                   name="password"
                   label="Пароль"
                   type="password"
@@ -99,6 +135,11 @@ const SignUp = () => {
                 />
               </Grid>
             </Grid>
+            {error ? (
+              <Typography align="center" color="error">
+                {error}
+              </Typography>
+            ) : null}
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Зарегистрироваться
             </Button>

@@ -44,7 +44,7 @@ const Login = () => {
           <Typography component="h1" variant="h5">
             Авторизация
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -63,7 +63,6 @@ const Login = () => {
               label="Пароль"
               type="password"
               id="password"
-              autoComplete="current-password"
             />
 
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
@@ -73,7 +72,7 @@ const Login = () => {
               Войти через Google
               <GoogleIcon />
             </Button>
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent="flex-end" sx={{ mt: 2 }}>
               <NavLink to={REG_ROUTE}>
                 <Link href="#">{'Нет аккаунта? Зарегистрироваться'}</Link>
               </NavLink>

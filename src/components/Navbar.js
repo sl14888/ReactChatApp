@@ -15,7 +15,7 @@ import { Button } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { LOGIN_ROUTE } from '../utils/consts';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { Context } from '..';
+import { Context } from '../firebase';
 
 const darkTheme = createTheme({
   palette: {
@@ -47,9 +47,7 @@ const Navbar = () => {
       <AppBar color="primary" sx={{ bgcolor: '#0d0c22' }} position="static">
         <Container maxWidth="lg">
           <Toolbar disableGutters>
-            <ChatBubbleIcon
-              sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color: '#1976d2' }}
-            />
+            <ChatBubbleIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
             <Typography
               variant="h6"
               noWrap
@@ -67,9 +65,7 @@ const Navbar = () => {
               CHATAPP KUBSU
             </Typography>
 
-            <ChatBubbleIcon
-              sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, color: '#1976d2' }}
-            />
+            <ChatBubbleIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
             <Typography
               variant="h5"
               noWrap

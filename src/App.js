@@ -2,7 +2,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import './App.css';
 import AppRouter from './components/AppRouter';
-import { Context } from '.';
+import { Context } from './firebase';
 import { useContext } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Loader from './components/Loader';
