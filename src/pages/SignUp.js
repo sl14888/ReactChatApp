@@ -52,21 +52,19 @@ const SignUp = () => {
     loading: false,
   });
   const { name, lastName, email, password, error, loading } = data;
-
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(data);
     setData({ ...data, error: null, loading: true });
     if (!name || !lastName || !email || !password) {
       setData({ ...data, error: 'Заполнить все поля' });
     }
     try {
-      const result = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(result.user);
+      const result = await auth().createUserWithEmailAndPassword(auth, email, password);
+      console.log(result);
     } catch (error) {}
   };
 
@@ -150,9 +148,7 @@ const SignUp = () => {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <NavLink to={LOGIN_ROUTE}>
-                  <Link href="#" variant="body2">
-                    Уже есть аккаунт? Войти.
-                  </Link>
+                  <Link variant="body2">Уже есть аккаунт? Войти.</Link>
                 </NavLink>
               </Grid>
             </Grid>
