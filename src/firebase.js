@@ -6,6 +6,7 @@ import { createContext } from 'react';
 firebase.initializeApp({
   apiKey: 'AIzaSyDfouAJg7Wk6yBL5T_AxmkbC8fCMsAh3Kg',
   authDomain: 'chatapp-kubsu.firebaseapp.com',
+  databaseURL: 'http://chatapp-kubsu.firebaseio.com',
   projectId: 'chatapp-kubsu',
   storageBucket: 'chatapp-kubsu.appspot.com',
   messagingSenderId: '541118397361',

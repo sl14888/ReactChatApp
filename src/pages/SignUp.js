@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
@@ -8,11 +8,14 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 import { NavLink } from 'react-router-dom';
 import { LOGIN_ROUTE } from '../utils/consts';
+
 import { Context } from '../firebase';
 import firebase from 'firebase/compat/app';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { setDoc, doc, Timestamp } from 'firebase/firestore';
 
 const theme = createTheme({
   palette: {
@@ -24,24 +27,13 @@ const theme = createTheme({
 });
 
 const SignUp = () => {
-  const { auth } = React.useContext(Context);
+  const { auth, firestore } = useContext(Context);
 
   const signUp = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     const { user } = await auth.signInWithPopup(provider);
     console.log(user);
   };
-
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     name: data.get('firstName'),
-  //     lastName: data.get('lastName'),
-  //     email: data.get('email'),
-  //     password: data.get('password'),
-  //   });
-  // };
 
   const [data, setData] = useState({
     name: '',
@@ -55,7 +47,7 @@ const SignUp = () => {
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
-
+  console.log(firestore);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setData({ ...data, error: null, loading: true });
@@ -63,9 +55,20 @@ const SignUp = () => {
       setData({ ...data, error: 'Заполнить все поля' });
     }
     try {
-      const result = await auth().createUserWithEmailAndPassword(auth, email, password);
-      console.log(result);
-    } catch (error) {}
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+
+      await setDoc(doc(firestore, 'users', result.user.uid), {
+        uid: result.user.uid,
+        name,
+        email,
+        createdAt: Timestamp.fromDate(new Date()),
+        isOnline: true,
+      });
+      setData({ name: '', email: '', password: '', error: null, loading: false });
+      // firebase.firestore().collection('users').doc().set({});
+    } catch (error) {
+      setData({ ...data, error: error.message, loading: false });
+    }
   };
 
   return (
