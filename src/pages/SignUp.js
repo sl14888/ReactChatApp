@@ -28,6 +28,14 @@ const theme = createTheme({
 });
 
 const SignUp = () => {
+  const firebaseErrors = {
+    'auth/user-not-found':
+      'Нет пользователя, соответствующего этому адресу электронной почты',
+    'auth/email-already-in-use': 'Адрес электронной почты уже используется',
+    'auth/invalid-email': 'Адрес электронной почты имеет неправильный формат',
+    'auth/internal-error': 'Произошла внутренняя ошибка аутентификации',
+    'auth/wrong-password': 'Вы ввели не верный пароль.',
+  };
   // получаю данные через контекст
   const { auth, firestore } = useContext(Context);
 
@@ -37,7 +45,6 @@ const SignUp = () => {
     //Авторизация по google через popup
     const provider = new firebase.auth.GoogleAuthProvider();
     const { user } = await auth.signInWithPopup(provider);
-    console.log(user);
   };
   // данные для регистрации
   const [data, setData] = useState({
@@ -58,10 +65,6 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setData({ ...data, error: null, loading: true });
-    // валидация на пустоту
-    if (!name || !lastName || !email || !password) {
-      setData({ ...data, error: 'Заполнить все поля' });
-    }
 
     try {
       // регистрация по почте
@@ -80,7 +83,11 @@ const SignUp = () => {
       history('/');
     } catch (error) {
       // вывожу ошибку
-      setData({ ...data, error: error.message, loading: false });
+      setData({
+        ...data,
+        error: firebaseErrors[error.code] || error.message,
+        loading: false,
+      });
     }
   };
 
@@ -174,10 +181,11 @@ const SignUp = () => {
               {loading ? 'Загрузка...' : 'Войти через Google'}
               <GoogleIcon />
             </Button>
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
               <Grid item>
+                Уже есть аккаунт?
                 <NavLink to={LOGIN_ROUTE}>
-                  <Link variant="body2">Уже есть аккаунт? Войти.</Link>
+                  <Link variant="body2"> Войти.</Link>
                 </NavLink>
               </Grid>
             </Grid>

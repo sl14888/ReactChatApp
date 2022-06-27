@@ -10,6 +10,7 @@ const AppRouter = () => {
   // Проверка входа
   return user ? (
     <Routes>
+      {/* приватный роут */}
       {privateRoutes.map(({ path, Component }) => (
         <Route key={path} path={path} element={Component} exact />
       ))}
@@ -18,6 +19,7 @@ const AppRouter = () => {
     </Routes>
   ) : (
     <Routes>
+      {/* публичный роут */}
       {publicRoutes.map(({ path, Component }) => (
         <Route key={path} path={path} element={Component} exact />
       ))}

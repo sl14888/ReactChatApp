@@ -9,13 +9,15 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Button } from '@mui/material';
+
 import { NavLink } from 'react-router-dom';
-import { LOGIN_ROUTE } from '../utils/consts';
+import { CHAT_ROUTE, LOGIN_ROUTE, PROFILE_ROUTE } from '../utils/consts';
+
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Context } from '../firebase';
+import { updateDoc, doc } from 'firebase/firestore';
 
 const darkTheme = createTheme({
   palette: {
@@ -26,10 +28,8 @@ const darkTheme = createTheme({
   },
 });
 
-const settings = ['Профиль', 'Выйти'];
-
 const Navbar = () => {
-  const { auth } = React.useContext(Context);
+  const { auth, firestore } = React.useContext(Context);
   const [user] = useAuthState(auth);
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -42,35 +42,41 @@ const Navbar = () => {
     setAnchorElUser(null);
   };
 
+  // выход из аккаунта
+  const handleSignOut = async () => {
+    // обновление коллекции (Пользователь вышел из сети)
+    await updateDoc(doc(firestore, 'users', user.uid), {
+      isOnline: false,
+    });
+    await auth.signOut();
+  };
+
   return (
     <ThemeProvider theme={darkTheme}>
       <AppBar color="primary" sx={{ bgcolor: '#0d0c22' }} position="static">
         <Container maxWidth="lg">
           <Toolbar disableGutters>
-            <ChatBubbleIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                color: '#fff',
-                textDecoration: 'none',
-              }}
-            >
-              CHATAPP KUBSU
-            </Typography>
-
-            <ChatBubbleIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+            <NavLink to={CHAT_ROUTE}>
+              <Typography
+                variant="h6"
+                noWrap
+                component="p"
+                sx={{
+                  mr: 2,
+                  display: { xs: 'none', md: 'flex' },
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  color: '#fff',
+                  textDecoration: 'none',
+                }}
+              >
+                🔥 CHATAPP KUBSU
+              </Typography>
+            </NavLink>
             <Typography
               variant="h5"
               noWrap
-              component="a"
-              href=""
+              component="p"
               sx={{
                 mr: 2,
                 display: { xs: 'flex', md: 'none' },
@@ -81,7 +87,7 @@ const Navbar = () => {
                 textDecoration: 'none',
               }}
             >
-              CHATAPP
+              🔥 CHATAPP
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}></Box>
             {user ? (
@@ -108,9 +114,11 @@ const Navbar = () => {
                   onClose={handleCloseUserMenu}
                 >
                   <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">Профиль</Typography>
+                    <Typography textAlign="center">
+                      <NavLink to={PROFILE_ROUTE}>Профиль</NavLink>
+                    </Typography>
                   </MenuItem>
-                  <MenuItem onClick={() => auth.signOut()}>
+                  <MenuItem onClick={handleSignOut}>
                     <Typography textAlign="center">Выйти</Typography>
                   </MenuItem>
                 </Menu>

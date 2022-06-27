@@ -4985,6 +4985,11 @@ find-up@^5.0.0:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
 
+firebase-error-translator@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/firebase-error-translator/-/firebase-error-translator-1.0.1.tgz#5af89cc7e7de5e6e40eef2beaeaf100bf25f1d3b"
+  integrity sha512-KOb3Xfk55h6hwKLr9IdIM51/6iNnuvrmzbh2GnEkPXToEqz9LtjLmAKqZCjJJbzRujLz38h3YaCyd8vfaM9SsQ==
+
 firebase@^9.8.1:
   version "9.8.1"
   resolved "https://registry.npmjs.org/firebase/-/firebase-9.8.1.tgz"

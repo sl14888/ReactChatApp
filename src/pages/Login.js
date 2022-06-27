@@ -2,13 +2,12 @@ import React, { useContext, useState } from 'react';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import GoogleIcon from '@mui/icons-material/Google';
-import { Grid } from '@mui/material';
+import { Grid, Link } from '@mui/material';
 
 import { NavLink, useNavigate } from 'react-router-dom';
 import { REG_ROUTE } from '../utils/consts';
@@ -29,6 +28,14 @@ const theme = createTheme({
 });
 
 const Login = () => {
+  const firebaseErrors = {
+    'auth/user-not-found':
+      'Нет пользователя, соответствующего этому адресу электронной почты',
+    'auth/email-already-in-use': 'Адрес электронной почты уже используется',
+    'auth/invalid-email': 'Адрес электронной почты имеет неправильный формат',
+    'auth/internal-error': 'Произошла внутренняя ошибка аутентификации',
+    'auth/wrong-password': 'Вы ввели не верный пароль.',
+  };
   // получаю данные через контекст
   const { auth, firestore } = useContext(Context);
 
@@ -38,8 +45,8 @@ const Login = () => {
     //Авторизация по google через popup
     const provider = new firebase.auth.GoogleAuthProvider();
     const { user } = await auth.signInWithPopup(provider);
-    console.log(user);
   };
+
   // данные для регистрации
   const [data, setData] = useState({
     email: '',
@@ -57,11 +64,6 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setData({ ...data, error: null, loading: true });
-    // валидация на пустоту
-    if (!email || !password) {
-      setData({ ...data, error: 'Заполнить все поля' });
-    }
-
     try {
       // регистрация по почте
       const result = await signInWithEmailAndPassword(auth, email, password);
@@ -75,7 +77,11 @@ const Login = () => {
       history('/');
     } catch (error) {
       // вывожу ошибку
-      setData({ ...data, error: error.message, loading: false });
+      setData({
+        ...data,
+        error: firebaseErrors[error.code] || error.message,
+        loading: false,
+      });
     }
   };
 
@@ -103,8 +109,6 @@ const Login = () => {
               id="email"
               label="Почта"
               name="email"
-              autoComplete="email"
-              autoFocus
             />
             <TextField
               margin="normal"
@@ -123,7 +127,6 @@ const Login = () => {
                 {error}
               </Typography>
             ) : null}
-
             <Button
               disabled={loading}
               type="submit"
@@ -133,13 +136,32 @@ const Login = () => {
             >
               {loading ? 'Загрузка...' : 'Войти'}
             </Button>
-            <Button disabled={loading} fullWidth variant="contained" sx={{ mb: 2 }}>
-              {loading ? 'Загрузка...' : 'Войти через Google'}
-              <GoogleIcon />
-            </Button>
-            <Grid container justifyContent="flex-end" sx={{ mt: 2 }}>
+            {loading ? (
+              <Button
+                disabled={loading}
+                onClick={signIn}
+                fullWidth
+                variant="contained"
+                sx={{ mb: 2 }}
+              >
+                Загрузка...
+              </Button>
+            ) : (
+              <Button
+                disabled={loading}
+                onClick={signIn}
+                fullWidth
+                variant="contained"
+                sx={{ mb: 2 }}
+              >
+                Войти через Google
+                <GoogleIcon />
+              </Button>
+            )}
+            <Grid container justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
+              <Typography>Нет аккаунта?</Typography>
               <NavLink to={REG_ROUTE}>
-                <Link href="#">{'Нет аккаунта? Зарегистрироваться'}</Link>
+                <Link variant="body2"> Зарегистрироваться.</Link>
               </NavLink>
             </Grid>
           </Box>
