@@ -2,13 +2,11 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "private": true,
-  "homepage": "https://sl14888.github.io/ReactChatApp/",
   "main": "server.js",
   "scripts": {
     "server": "nodemon server.js",
     "start": "node server.js",
-    "client": "npm run build --prefix ../client",
+    "client": "npm run start --prefix ../client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "deploy": "gh-pages -d start",
     "predeploy": "npm run dev"
