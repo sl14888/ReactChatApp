@@ -22,37 +22,37 @@ MySQL — свободная реляционная система управл�
 Общий вид
   Главная страница входа в чат
  
- <img align="right" src="https://github.com/sl14888/React-todo-learning/blob/master/readme-img/1.png">
+ <img align="right" src="https://github.com/sl14888/ReactChatApp/blob/master/readme-img/1.png">
 
 Чат после входа “Юзер Один” (экран первого пользователя)
 
-<img align="right" src="https://github.com/sl14888/React-todo-learning/blob/master/readme-img/2.png">
+<img align="right" src="https://github.com/sl14888/ReactChatApp/blob/master/readme-img/2.png">
  
 Чат после входа “Юзер Два” (экран первого пользователя) 
 
-<img align="right" src="https://github.com/sl14888/React-todo-learning/blob/master/readme-img/3.png">
+<img align="right" src="https://github.com/sl14888/ReactChatApp/blob/master/readme-img/3.png">
 
 Сообщение, отправленное в чат глобально (экран первого пользователя)
  
-<img align="right" src="https://github.com/sl14888/React-todo-learning/blob/master/readme-img/4.png">
+<img align="right" src="https://github.com/sl14888/ReactChatApp/blob/master/readme-img/4.png">
 
 
 
 
 Сообщение, полученное вторым пользователем глобально (экран второго пользователя)
 
-<img align="right" src="https://github.com/sl14888/React-todo-learning/blob/master/readme-img/5.png">
+<img align="right" src="https://github.com/sl14888/ReactChatApp/blob/master/readme-img/5.png">
  
 Отправка приватного сообщение вторым пользователем первому (экран второго пользователя)
  
 
 
-<img align="right" src="https://github.com/sl14888/React-todo-learning/blob/master/readme-img/6.png">
+<img align="right" src="https://github.com/sl14888/ReactChatApp/blob/master/readme-img/6.png">
 
 
 
 
 Первый пользователь получил приватное сообщение от второго (экран первого пользователя)
 
-<img align="right" src="https://github.com/sl14888/React-todo-learning/blob/master/readme-img/7.png">
+<img align="right" src="https://github.com/sl14888/ReactChatApp/blob/master/readme-img/7.png">
 
