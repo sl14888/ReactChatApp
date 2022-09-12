@@ -31,7 +31,7 @@ conn.query(queryString, (err, result) => {
     console.log(err, 'ошибка!');
   }
   if (result) {
-    console.log('БД', result);
+    // console.log('БД', result);
   }
 });
 

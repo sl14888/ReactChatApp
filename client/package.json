@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://sl14888.github.io/ReactChatApp/",
   "dependencies": {
     "@craco/craco": "^6.0.0",
     "@tailwindcss/postcss7-compat": "^2.0.2",
@@ -10,6 +11,7 @@
     "@testing-library/user-event": "^12.1.10",
     "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
+    "gh-pages": "^4.0.0",
     "postcss": "^7.0.36",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -23,6 +25,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
+    "server": "npm run build --prefix client",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
@@ -44,6 +47,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8080",
-  "devDependencies": {}
+  "proxy": "http://localhost:8080"
 }
